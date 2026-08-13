@@ -1,4 +1,4 @@
-# Assignment 1: Run OpenEMR Locally with Docker
+# Milestone 00: Domain and System Understanding
 
 ## Learning Goals
 
