@@ -46,7 +46,7 @@ Clone **this** repository (not the original OpenEMR repo) — you'll be
 working from the class fork/kit version:
 
 ```bash
-git clone <URL-of-this-repo>
+git clone https://github.com/pfv610/OpenRE_Kit.git
 cd <repo-folder-name>
 ```
 
