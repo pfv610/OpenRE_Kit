@@ -11,7 +11,10 @@ supposed to do" actually lives.
 This milestone is grounded in **Chapters 1 and 2** of the textbook
 (*Requirements Engineering: From System Goals to UML Models to Software
 Specifications*, Van Lamsweerde). Re-read those chapters before you start —
-you will apply their concepts directly, not just describe them.
+you will apply their concepts directly, not just describe them. A few
+concepts from **Chapter 7 (Goal Orientation in RE)** are also referenced as
+an optional aid for phrasing goals precisely in Section 3 — you don't need
+to read the full chapter, just the excerpt pointed to there.
 
 Each team will produce a **Domain Understanding Report** based on the frozen
 `v8_0_0` release of OpenEMR.
@@ -130,7 +133,11 @@ Brief description of OpenEMR: its domain (ambulatory/outpatient EHR and
 practice management), scale, and the general problem it exists to solve.
 
 ### 2. Stakeholder Analysis
-Identify at least **5 distinct stakeholder types** (e.g., front-desk staff). For each, briefly explain:
+Identify at least **5 distinct stakeholder types** (e.g., front-desk staff,
+physician/clinician, biller, clinic administrator, IT/system administrator,
+patient, external auditor/regulator). For each, using the criteria from
+Ch. 2 (position in the organization, role in decisions, type of domain
+knowledge, exposure to problems, influence on acceptance), briefly explain:
 - What they need from the system
 - What evidence in the codebase/UI/docs supports that this role is
   actually served by the system
@@ -141,27 +148,74 @@ deriving the services that satisfy them (WHAT). Apply it that way here.
 
 Start by asking: **why is OpenEMR being used at all?** Using what you found
 in Part 1 (hands-on exploration) and Part 2 (codebase and documentation
-study), identify **at least 10 reasons/goals (WHY)** — the objectives the
-system exists to satisfy. Look for evidence first — a doc, code comment,
-UI label, or issue discussion that states or implies the goal. Where no
-explicit evidence exists, you may infer it from domain knowledge, but say
-so explicitly and justify the inference — don't present a guess as a
-documented fact.
+study), identify **at least 10 reasons/goals (WHY)** — the objectives
+different stakeholders use the system to satisfy (e.g. "Reduce the risk of
+prescribing a medication a patient is allergic to"). Look for evidence
+first — a doc, code comment, UI label, or issue discussion that states or
+implies the goal. Where no explicit evidence exists, you may infer it from
+domain knowledge, but say so explicitly and justify the inference — don't
+present a guess as a documented fact.
 
-For each of the 10+ goals (whys), then work out the other two dimensions:
-- **WHAT (the requirement)**: What the system does, concretely, to
+For **each** of those 10+ goals, then fill in the other two columns:
+
+- **WHAT (the functionality)**: What the system does, concretely, to
   accomplish that goal. Write this as an observed capability, not an
-  abstraction.
+  abstraction — e.g. for the allergy goal above: "The system checks
+  entered medications against the patient's recorded allergies and
+  displays a warning before the prescription is saved." Don't call this a
+  "requirement" yet — per Chapter 7, a requirement is specifically *a goal
+  assigned to a single agent in the software-to-be*. At this stage you're
+  observing a capability, not yet refining a goal down to one responsible
+  agent, so "functionality" or "capability" is the accurate term here.
 - **WHO (the actor)**: Who performs or is responsible for this
   functionality? Tie this back to your Stakeholder Analysis (Section 2)
-  and to any role/permission evidence you found in Part 2.
+  and to any role/permission evidence you found in Part 2. Note that a
+  single functionality may genuinely involve **multiple** cooperating
+  actors (e.g. front-desk staff *and* the system itself) — you don't need
+  to force it down to one; that single-agent narrowing is what turns a
+  goal into a formal requirement, and that's a later step, not this one.
 
-Present this as a table (WHY / WHAT / WHO / evidence) so the traceability
-between the three is visible at a glance.
+Present this as a table with one row per goal — columns: **WHY (goal) |
+WHAT (functionality) | WHO (actor) | Evidence** — so the traceability from
+objective to functionality to actor is visible at a glance.
+
+> **How to phrase a goal (optional reference: Ch. 7, "Goal Orientation in
+> RE")**
+>
+> Writing a clear goal is harder than it looks — it's easy to accidentally
+> write a fact about the domain instead of an objective the system should
+> satisfy. A few tools from Chapter 7 (not required reading, but useful if
+> your WHY statements feel vague):
+>
+> - **Goals vs. domain properties.** A goal is *prescriptive* — phrased in
+>   the optative mood ("shall," "should," "must"), e.g. *"Prescriptions
+>   shall be checked against recorded allergies before saving."* A domain
+>   property is *descriptive* — a plain fact about the world, e.g.
+>   *"A patient may have one or more recorded allergies."* Domain
+>   properties belong in your background/evidence notes, not in the WHY
+>   column.
+> - **Three lightweight patterns for stating a goal precisely:**
+>   - **Achieve[...]** — a target condition should eventually hold, e.g.
+>     *Achieve[AppointmentConfirmed]*: "If a patient requests an
+>     appointment, sooner or later that appointment is confirmed."
+>   - **Maintain[...]** — a condition should always hold, e.g.
+>     *Maintain[NoAllergyConflict]*: "A prescription is never saved while
+>     it conflicts with a recorded allergy."
+>   - **Avoid[...]** — a bad condition should never occur (the dual of
+>     Maintain), e.g. *Avoid[UnauthorizedRecordAccess]*: "Patient records
+>     are never viewable by a user without an assigned clinical role."
+>   Using one of these patterns for at least a few of your 10 goals will
+>   make them sharper and easier to trace to a WHAT.
+> - **Functional vs. quality goals.** Not all 10 goals need to be
+>   functional ("a service the system provides"). Consider including at
+>   least 1–2 **quality goals** — about security, accuracy, performance,
+>   or usability — since these are often invisible in a quick feature
+>   walkthrough but are central to a clinical system like OpenEMR (e.g.,
+>   confidentiality of patient data, accuracy of recorded vitals).
 
 ### 4. Major Workflows
 Document at least **2 end-to-end workflows** you exercised in Part 1, as
-simple step lists. For each step, note which stakeholder role
+simple step lists or diagrams. For each step, note which stakeholder role
 performs it.
 
 ### 5. Where Requirements Knowledge Lives
