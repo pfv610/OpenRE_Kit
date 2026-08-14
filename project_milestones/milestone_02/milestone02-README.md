@@ -25,9 +25,7 @@ check your repo for the exact path). It is a **flat, unprocessed listing**:
 every team's Milestone 1 WHY/WHAT/WHO table (WHY, WHAT, Functional/
 Non-functional, System req./Software req., WHO, Evidence), stacked
 together with a team identifier column added, in whatever order the
-tables were collected. Nothing has been sorted, grouped, or curated for
-you — clustering it is your job, not something done for you in advance
-(see Part 0).
+tables were collected. 
 
 Concretely, you will:
 1. **Cluster** the elicited requirements by functional area yourselves
