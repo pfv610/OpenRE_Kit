@@ -11,10 +11,7 @@ supposed to do" actually lives.
 This milestone is grounded in **Chapters 1 and 2** of the textbook
 (*Requirements Engineering: From System Goals to UML Models to Software
 Specifications*, Van Lamsweerde). Re-read those chapters before you start —
-you will apply their concepts directly, not just describe them. A few
-concepts from **Chapter 7 (Goal Orientation in RE)** are also referenced as
-an optional aid for phrasing goals precisely in Section 3 — you don't need
-to read the full chapter, just the excerpt pointed to there.
+you will apply their concepts directly, not just describe them.
 
 Each team will produce a **Domain Understanding Report** based on the frozen
 `v8_0_0` release of OpenEMR.
@@ -156,62 +153,56 @@ implies the goal. Where no explicit evidence exists, you may infer it from
 domain knowledge, but say so explicitly and justify the inference — don't
 present a guess as a documented fact.
 
-For **each** of those 10+ goals, then fill in the other two columns:
+For **each** of those 10+ goals, then fill in the other columns:
 
-- **WHAT (the functionality)**: What the system does, concretely, to
-  accomplish that goal. Write this as an observed capability, not an
-  abstraction — e.g. for the allergy goal above: "The system checks
-  entered medications against the patient's recorded allergies and
-  displays a warning before the prescription is saved." Don't call this a
-  "requirement" yet — per Chapter 7, a requirement is specifically *a goal
-  assigned to a single agent in the software-to-be*. At this stage you're
-  observing a capability, not yet refining a goal down to one responsible
-  agent, so "functionality" or "capability" is the accurate term here.
+- **WHAT (the requirement)**: Now write the actual requirement that
+  accomplishes that goal — as a **prescriptive statement**, per Chapter 1's
+  definition (slide 17: optative mood — "shall," "should," "must"). This is
+  different from just describing what you observed: you're translating an
+  observation into a properly-formed requirement statement. For example,
+  for the allergy goal above:
+  - *Observed behavior (goes in Evidence, not WHAT):* "When we entered a
+    medication that matched a recorded allergy, the system displayed a
+    warning before letting us save."
+  - *Requirement (goes in WHAT):* **"The system shall check entered
+    medications against the patient's recorded allergies and shall
+    display a warning before the prescription is saved."**
+
+  Classify each requirement using the two Chapter 1 distinctions:
+  - **Functional vs. non-functional** (slide 23): does it prescribe a
+    service the software provides (functional), or constrain *how* a
+    service is provided — a quality concern like safety, security,
+    accuracy, performance, usability, or a compliance/architectural/
+    development concern (non-functional)? Don't let all 10 turn out
+    functional — a clinical system like OpenEMR has real quality concerns
+    (e.g. confidentiality of patient data, accuracy of recorded vitals)
+    that are easy to miss on a quick feature walkthrough.
+  - **System requirement vs. software requirement** (slide 19): is it
+    formulated in terms of environment phenomena, understandable by all
+    parties (system requirement — e.g. "A prescription shall not be
+    finalized while it conflicts with a recorded allergy")? Or in terms of
+    phenomena shared between the software and environment, in developer
+    vocabulary, enforced by the software alone (software requirement —
+    e.g. "The medication-entry form shall set `allergyConflict = true` and
+    block the save action when the entered NDC code matches a recorded
+    allergy code")? Write each requirement at whichever level your
+    evidence supports — most of your 10 will likely be system requirements
+    unless you dug into the code closely enough to state the software-level
+    behavior precisely.
 - **WHO (the actor)**: Who performs or is responsible for this
-  functionality? Tie this back to your Stakeholder Analysis (Section 2)
-  and to any role/permission evidence you found in Part 2. Note that a
-  single functionality may genuinely involve **multiple** cooperating
-  actors (e.g. front-desk staff *and* the system itself) — you don't need
-  to force it down to one; that single-agent narrowing is what turns a
-  goal into a formal requirement, and that's a later step, not this one.
+  requirement? Tie this back to your Stakeholder Analysis (Section 2) and
+  to any role/permission evidence you found in Part 2. A single
+  requirement may genuinely involve **multiple** cooperating actors (e.g.
+  front-desk staff *and* the system itself) — you don't need to force it
+  down to one.
 
 Present this as a table with one row per goal — columns: **WHY (goal) |
-WHAT (functionality) | WHO (actor) | Evidence** — so the traceability from
-objective to functionality to actor is visible at a glance.
+WHAT (requirement) | Functional/Non-functional | System req./Software req.
+| WHO (actor) | Evidence** — so the traceability from objective to
+requirement to actor is visible at a glance, and the Evidence column
+carries what you actually observed, separate from the requirement
+statement you wrote from it.
 
-> **How to phrase a goal (optional reference: Ch. 7, "Goal Orientation in
-> RE")**
->
-> Writing a clear goal is harder than it looks — it's easy to accidentally
-> write a fact about the domain instead of an objective the system should
-> satisfy. A few tools from Chapter 7 (not required reading, but useful if
-> your WHY statements feel vague):
->
-> - **Goals vs. domain properties.** A goal is *prescriptive* — phrased in
->   the optative mood ("shall," "should," "must"), e.g. *"Prescriptions
->   shall be checked against recorded allergies before saving."* A domain
->   property is *descriptive* — a plain fact about the world, e.g.
->   *"A patient may have one or more recorded allergies."* Domain
->   properties belong in your background/evidence notes, not in the WHY
->   column.
-> - **Three lightweight patterns for stating a goal precisely:**
->   - **Achieve[...]** — a target condition should eventually hold, e.g.
->     *Achieve[AppointmentConfirmed]*: "If a patient requests an
->     appointment, sooner or later that appointment is confirmed."
->   - **Maintain[...]** — a condition should always hold, e.g.
->     *Maintain[NoAllergyConflict]*: "A prescription is never saved while
->     it conflicts with a recorded allergy."
->   - **Avoid[...]** — a bad condition should never occur (the dual of
->     Maintain), e.g. *Avoid[UnauthorizedRecordAccess]*: "Patient records
->     are never viewable by a user without an assigned clinical role."
->   Using one of these patterns for at least a few of your 10 goals will
->   make them sharper and easier to trace to a WHAT.
-> - **Functional vs. quality goals.** Not all 10 goals need to be
->   functional ("a service the system provides"). Consider including at
->   least 1–2 **quality goals** — about security, accuracy, performance,
->   or usability — since these are often invisible in a quick feature
->   walkthrough but are central to a clinical system like OpenEMR (e.g.,
->   confidentiality of patient data, accuracy of recorded vitals).
 
 ### 4. Major Workflows
 Document at least **2 end-to-end workflows** you exercised in Part 1, as
@@ -245,7 +236,8 @@ or observation session to find out?
 
 | Criterion | What we're looking for |
 |---|---|
-| Correct use of Ch. 1/2 concepts | You use terms like system-as-is/to-be, WHY/WHAT/WHO, descriptive/prescriptive accurately, not just as buzzwords |
+| Correct use of Ch. 1/2 concepts | You use terms like system-as-is/to-be, WHY/WHAT/WHO, descriptive/prescriptive, functional/non-functional, system req./software req. accurately, not just as buzzwords |
+| Requirement quality | WHAT entries are genuine prescriptive statements ("shall"/"should"/"must"), not restated observations |
 | Stakeholder analysis depth | Roles are specific and justified with evidence, not generic guesses |
 | Evidence quality | Claims are backed by specific artifacts (paths, links, screenshots), not vague impressions |
 | Workflow documentation | Workflows are accurate to what you actually did in the system, with correct role attribution |
