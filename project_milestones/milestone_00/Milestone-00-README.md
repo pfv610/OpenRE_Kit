@@ -1,4 +1,4 @@
-# Milestone 00: Domain and System Understanding
+# Milestone 00: Running OpenEMR
 
 ## Learning Goals
 
